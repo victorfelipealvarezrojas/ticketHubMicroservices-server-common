@@ -2,7 +2,7 @@ interface Color {
     red: number;
 }
 const color:Color = {
-    red:10,
+    red:20,
 }
 
 console.log(color);
