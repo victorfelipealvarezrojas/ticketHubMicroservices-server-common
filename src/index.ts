@@ -14,3 +14,5 @@ export * from  './events/base-publisher';
 export * from  './events/ticket-created-event';
 export * from  './events/ticket-updated-event';
 export * from  './events/subjects';
+
+//npm run pub
