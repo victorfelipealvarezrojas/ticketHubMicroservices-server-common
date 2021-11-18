@@ -6,15 +6,17 @@ interface Event {
     data: any;
 }
 
+//Cuando extendamos este oyente, nos aseguraremos de proporcionar un tipo de evento como el tipo genérico
 export abstract class Listener<T extends Event> {
     //abstract son los metodos de implementacion
-    //van a ser propiedades abstractas, lo que significa que deben ser definidas por nuestra subclase
-    abstract subject: T['subject'];
-    abstract queueGropuName:string;
+    abstract subject: T['subject'];//tema
+    abstract queueGropuName:string;//queremos escuchar en ese nombre de grupo IQ del servidor de cadenas  
+    //vla función on message, la función on message es lo que realmente va a recibir
     abstract onMessage(data : T['data'], msg: Message): void;//funcion que marcara el proceso de recepcion del evento como finalizado
     private client: Stan;
     protected ackWait = 5 * 1000;
 
+    //a la instancia de esta clase se le proporciona un cliente NATS 
     constructor(client: Stan) {
         this.client = client;
     }
@@ -30,6 +32,7 @@ export abstract class Listener<T extends Event> {
 
     //metodo de escucha y es aqui donde se configura la subscripcion
     //Eso nos dará nuestra suscripción después de que la obtengamos
+    //Esto es lo que realmente le va a decir al cliente que comience a suscribirse o crear una suscripción
     listen() {
         //me subscribo al evento "ticket:created"
         const subscription = this.client.subscribe(
@@ -39,6 +42,7 @@ export abstract class Listener<T extends Event> {
         )
 
         //activo la suscripcion y obtengo mensaje 
+        //cada vez que recibimos un mensaje, es cuando realmente íbamos a llamar a la función de mensaje en parseMessage
         subscription.on('message', (msg: Message) => {
             console.log(
                 `Message received: ${this.subject} / ${this.queueGropuName}`
