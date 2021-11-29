@@ -13,7 +13,7 @@ export abstract class Listener<T extends Event> {
     abstract queueGropuName:string;//queremos escuchar en ese nombre de grupo IQ del servidor de cadenas  
     //vla función on message, la función on message es lo que realmente va a recibir
     abstract onMessage(data : T['data'], msg: Message): void;//funcion que marcara el proceso de recepcion del evento como finalizado
-    private client: Stan;
+    protected client: Stan;
     protected ackWait = 5 * 1000;
 
     //a la instancia de esta clase se le proporciona un cliente NATS 
